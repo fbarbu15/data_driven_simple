@@ -78,12 +78,6 @@ public class TestBase {
 
 	}
 	
-	@BeforeMethod
-	public void nameBefore(Method method)
-	{
-		log.debug("Test method name : " + method.getName());       
-	}
-	
 	public boolean isElementPresent(By by) {
 		try {
 			driver.findElement(by);
