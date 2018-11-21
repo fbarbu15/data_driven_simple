@@ -3,8 +3,9 @@ package testcases;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import base.TestBase;
 
@@ -23,13 +24,19 @@ public class BankManagerLoginTest extends TestBase {
 	}
 
 	@Test(priority=1, dataProvider = "getData")
-	public void addCustomer(String firstName, String lastName, String postCode) throws InterruptedException {
+	public void addCustomer(String firstName, String lastName, String postCode, String alerttext) throws InterruptedException {
 		
-		log.debug("Test begin"); 
-		System.out.println(firstName);
-		System.out.println(lastName);
-		System.out.println(postCode);
-		log.debug("Test ended"); 
+		driver.findElement(By.cssSelector(OR.getProperty("addCustBtn"))).click();
+		driver.findElement(By.cssSelector(OR.getProperty("firstNameField"))).sendKeys(firstName);
+		driver.findElement(By.cssSelector(OR.getProperty("lastNameField"))).sendKeys(lastName);
+		driver.findElement(By.cssSelector(OR.getProperty("postCodeField"))).sendKeys(postCode);
+		Thread.sleep(3000);
+		driver.findElement(By.cssSelector(OR.getProperty("confirmAdd"))).click();
+		Alert alert = wait.until(ExpectedConditions.alertIsPresent());
+		Assert.assertTrue(alert.getText().contains(alerttext), "Expected alert " + alerttext + " but got instead: " + alert.getText());
+		alert.accept();
+		Thread.sleep(3000);
+		log.debug("New customer added"); 
 
 	}
 

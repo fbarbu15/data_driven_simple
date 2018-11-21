@@ -13,6 +13,7 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
@@ -40,6 +41,7 @@ public class TestBase {
 	public static FileInputStream fis;
 	public static Logger log = Logger.getLogger("devpinoyLogger");
 	public static ExcelReader excel = new ExcelReader(System.getProperty("user.dir") + "/src/test/resources/excel/testdata.xlsx");
+	public static WebDriverWait wait;
 
 	@BeforeSuite
 	public void setUpSuite() throws IOException {
@@ -66,11 +68,12 @@ public class TestBase {
 				log.debug("Chrome Launched");
 			}
 
-			driver.get(config.getProperty("testsiteurl"));
-			log.debug("Navigated to : " + config.getProperty("testsiteurl"));
+			driver.get(config.getProperty("testSiteUrl"));
+			log.debug("Navigated to : " + config.getProperty("testSiteUrl"));
 			driver.manage().window().maximize();
-			driver.manage().timeouts().implicitlyWait(Integer.parseInt(config.getProperty("implicit.wait")),
+			driver.manage().timeouts().implicitlyWait(Integer.parseInt(config.getProperty("implicitWait")),
 					TimeUnit.SECONDS);
+			wait = new WebDriverWait(driver, 5);
 		}
 
 	}
