@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="Data Driven Simple">
-  <test name="LoginTest">
+  <test name="Bank Manager Login Test" preserve-order="true">
     <classes>
-      <class name="testcases.LoginTest"/>
+      <class name="testcases.BankManagerLoginTest">
+      </class>
     </classes>
   </test> <!-- Test -->
 </suite> <!-- Suite -->
