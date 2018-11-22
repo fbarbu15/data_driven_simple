@@ -1,10 +1,13 @@
 package listeners;
 
+import java.io.IOException;
+
 import org.apache.log4j.Logger;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
 import org.testng.Reporter;
+import utilities.TestUtil;
 
 public class CustomListeners implements ITestListener {
 	public static Logger log = Logger.getLogger("devpinoyLogger");
@@ -23,7 +26,13 @@ public class CustomListeners implements ITestListener {
 
 		System.setProperty("org.uncommons.reportng.escape-output", "false");
 		Reporter.log("Capturing screenshot");
-		Reporter.log("<a href=\"/Adtech/ProdPuma_2.png\">Screenshot</a>");
+		try {
+			TestUtil.captureScreenshot(result);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Reporter.log("<a href="+TestUtil.screenshotPath + TestUtil.screenshotName+">Screenshot</a>");
 
 	}
 

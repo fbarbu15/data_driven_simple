@@ -22,7 +22,7 @@ public class BankManagerLoginTest extends TestBase {
 		Assert.assertTrue(isElementPresent(By.cssSelector(OR.getProperty("addCustBtn"))), "Login was not successful: ");
 		log.debug("Login was successful");
 		Reporter.log("Login was successful");
-		Assert.fail("Intended fail");
+//		Assert.fail("FAIL INTENDED");
 
 	}
 
@@ -41,6 +41,7 @@ public class BankManagerLoginTest extends TestBase {
 		Thread.sleep(3000);
 		log.debug("New customer added");
 		Reporter.log("New customer added");
+//		Assert.fail("FAIL INTENDED");
 
 	}
 

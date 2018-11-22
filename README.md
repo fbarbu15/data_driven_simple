@@ -1,1 +1,2 @@
-# data_driven_simple
+RUN Tests from cli with maven: mvn clean test -DsuiteXmlFile=testng.xml
+
