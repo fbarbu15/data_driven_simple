@@ -3,7 +3,6 @@ package base;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
@@ -15,7 +14,6 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterSuite;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
 
 import utilities.ExcelReader;
@@ -76,12 +74,6 @@ public class TestBase {
 			wait = new WebDriverWait(driver, 5);
 		}
 
-	}
-	
-	@BeforeMethod
-	public void nameBefore(Method method)
-	{
-		log.debug("Test method name : " + method.getName());       
 	}
 	
 	public boolean isElementPresent(By by) {

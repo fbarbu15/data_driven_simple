@@ -1,6 +1,7 @@
 package testcases;
 
 import org.testng.Assert;
+import org.testng.Reporter;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import org.openqa.selenium.Alert;
@@ -14,12 +15,14 @@ public class BankManagerLoginTest extends TestBase {
 
 	@Test(priority=0)
 	public void loginAsBankManager() throws InterruptedException {
-
+		
 		driver.findElement(By.cssSelector(OR.getProperty("bmlBtn"))).click();
 		log.debug("Button Bank Manager Login was clicked"); 
 		Thread.sleep(3000);
 		Assert.assertTrue(isElementPresent(By.cssSelector(OR.getProperty("addCustBtn"))), "Login was not successful: ");
-		log.debug("Login was successful");  
+		log.debug("Login was successful");
+		Reporter.log("Login was successful");
+//		Assert.fail("FAIL INTENDED");
 
 	}
 
@@ -36,7 +39,9 @@ public class BankManagerLoginTest extends TestBase {
 		Assert.assertTrue(alert.getText().contains(alerttext), "Expected alert " + alerttext + " but got instead: " + alert.getText());
 		alert.accept();
 		Thread.sleep(3000);
-		log.debug("New customer added"); 
+		log.debug("New customer added");
+		Reporter.log("New customer added");
+//		Assert.fail("FAIL INTENDED");
 
 	}
 
