@@ -22,12 +22,12 @@ public class BankManagerLoginTest extends TestBase {
 		Assert.assertTrue(isElementPresent(By.cssSelector(OR.getProperty("addCustBtn"))), "Login was not successful: ");
 		log.debug("Login was successful");
 		Reporter.log("Login was successful");
-//		Assert.fail("FAIL INTENDED");
+		Assert.fail("FAIL INTENDED");
 
 	}
 
 	@Test(priority=1, dataProvider = "getData")
-	public void addCustomer(String firstName, String lastName, String postCode, String alerttext) throws InterruptedException {
+	public void addCustomer(String firstName, String lastName, String postCode, String alertText) throws InterruptedException {
 		
 		driver.findElement(By.cssSelector(OR.getProperty("addCustBtn"))).click();
 		driver.findElement(By.cssSelector(OR.getProperty("firstNameField"))).sendKeys(firstName);
@@ -36,12 +36,12 @@ public class BankManagerLoginTest extends TestBase {
 		Thread.sleep(3000);
 		driver.findElement(By.cssSelector(OR.getProperty("confirmAdd"))).click();
 		Alert alert = wait.until(ExpectedConditions.alertIsPresent());
-		Assert.assertTrue(alert.getText().contains(alerttext), "Expected alert " + alerttext + " but got instead: " + alert.getText());
+		Assert.assertTrue(alert.getText().contains(alertText), "Expected alert " + alertText + " but got instead: " + alert.getText());
 		alert.accept();
 		Thread.sleep(3000);
 		log.debug("New customer added");
 		Reporter.log("New customer added");
-//		Assert.fail("FAIL INTENDED");
+		Assert.fail("FAIL INTENDED");
 
 	}
 
