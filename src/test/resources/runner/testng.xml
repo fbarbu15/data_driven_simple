@@ -11,5 +11,11 @@
 			<class name="testcases.BankManagerLoginTest">
 			</class>
 		</classes>
+	</test> 
+	<test name="Open Account Test" preserve-order="true">
+		<classes>
+			<class name="testcases.OpenAccountTest">
+			</class>
+		</classes>
 	</test> <!-- Test -->
 </suite> <!-- Suite -->

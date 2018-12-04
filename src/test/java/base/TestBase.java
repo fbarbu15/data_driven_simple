@@ -12,6 +12,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 
@@ -21,6 +22,7 @@ import com.relevantcodes.extentreports.LogStatus;
 
 import utilities.ExcelReader;
 import utilities.ExtentManager;
+import utilities.TestUtil;
 
 public class TestBase {
 
@@ -71,12 +73,33 @@ public class TestBase {
 	}
 
 	public void click(String locator) {
-		driver.findElement(By.cssSelector(OR.getProperty(locator))).click();
+		if (locator.endsWith("_CSS")) {
+			driver.findElement(By.cssSelector(OR.getProperty(locator))).click();
+		} else if (locator.endsWith("_XPATH")) {
+			driver.findElement(By.xpath(OR.getProperty(locator))).click();
+		} else if (locator.endsWith("_ID")) {
+			driver.findElement(By.id(OR.getProperty(locator))).click();
+		}
+
 		test.log(LogStatus.INFO, "Clicking on : " + locator);
+	}
+	
+	public void verifyEquals(String expected, String actual) throws IOException {
+		try {
+			Assert.assertEquals(actual, expected);
+		} catch (Throwable e) {
+			TestUtil.captureScreenshot();
+		}
 	}
 
 	public void type(String locator, String value) {
-		driver.findElement(By.cssSelector(OR.getProperty(locator))).sendKeys(value);
+		if (locator.endsWith("_CSS")) {
+			driver.findElement(By.cssSelector(OR.getProperty(locator))).sendKeys(value);
+		} else if (locator.endsWith("_XPATH")) {
+			driver.findElement(By.xpath(OR.getProperty(locator))).sendKeys(value);
+		} else if (locator.endsWith("_ID")) {
+			driver.findElement(By.id(OR.getProperty(locator))).sendKeys(value);
+		}
 		test.log(LogStatus.INFO, "Typing in : " + locator + " and entered value as : " + value);
 	}
 
