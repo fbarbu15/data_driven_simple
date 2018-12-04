@@ -12,36 +12,36 @@ import base.TestBase;
 
 public class BankManagerLoginTest extends TestBase {
 
-
-	@Test(priority=0)
+	@Test(priority = 0)
 	public void loginAsBankManager() throws InterruptedException {
-		
-		driver.findElement(By.cssSelector(OR.getProperty("bmlBtn"))).click();
-		log.debug("Button Bank Manager Login was clicked"); 
+
+		click("bmlBtn");
 		Thread.sleep(3000);
 		Assert.assertTrue(isElementPresent(By.cssSelector(OR.getProperty("addCustBtn"))), "Login was not successful: ");
 		log.debug("Login was successful");
 		Reporter.log("Login was successful");
-		Assert.fail("FAIL INTENDED");
+//		Assert.fail("FAIL INTENDED");
 
 	}
 
-	@Test(priority=1, dataProvider = "getData")
-	public void addCustomer(String firstName, String lastName, String postCode, String alertText) throws InterruptedException {
-		
-		driver.findElement(By.cssSelector(OR.getProperty("addCustBtn"))).click();
-		driver.findElement(By.cssSelector(OR.getProperty("firstNameField"))).sendKeys(firstName);
-		driver.findElement(By.cssSelector(OR.getProperty("lastNameField"))).sendKeys(lastName);
-		driver.findElement(By.cssSelector(OR.getProperty("postCodeField"))).sendKeys(postCode);
-		Thread.sleep(3000);
-		driver.findElement(By.cssSelector(OR.getProperty("confirmAdd"))).click();
+	@Test(priority = 1, dataProvider = "getData")
+	public void addCustomer(String firstName, String lastName, String postCode, String alertText)
+			throws InterruptedException {
+
+		click("addCustBtn");
+		type("firstNameField", firstName);
+		type("lastNameField", lastName);
+		type("postCodeField", postCode);
+		Thread.sleep(2000);
+		click("confirmAdd");
 		Alert alert = wait.until(ExpectedConditions.alertIsPresent());
-		Assert.assertTrue(alert.getText().contains(alertText), "Expected alert " + alertText + " but got instead: " + alert.getText());
+		Assert.assertTrue(alert.getText().contains(alertText),
+				"Expected alert " + alertText + " but got instead: " + alert.getText());
 		alert.accept();
-		Thread.sleep(3000);
+		Thread.sleep(2000);
 		log.debug("New customer added");
 		Reporter.log("New customer added");
-		Assert.fail("FAIL INTENDED");
+//		Assert.fail("FAIL INTENDED");
 
 	}
 
