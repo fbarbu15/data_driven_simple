@@ -36,7 +36,7 @@ public class CustomListeners extends TestBase implements ITestListener {
 		System.setProperty("org.uncommons.reportng.escape-output", "false");
 		Reporter.log("Capturing screenshot");
 		try {
-			TestUtil.captureScreenshot(result);
+			TestUtil.captureScreenshot();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
