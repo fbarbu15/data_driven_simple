@@ -2,6 +2,7 @@ package testcases;
 
 import org.testng.Assert;
 import org.testng.Reporter;
+import org.testng.SkipException;
 import org.testng.annotations.Test;
 import com.relevantcodes.extentreports.LogStatus;
 import org.openqa.selenium.Alert;
@@ -13,6 +14,11 @@ public class OpenAccountTest extends TestBase {
 
 	@Test(dataProviderClass = TestUtil.class, dataProvider = "dp")
 	public void openAccountTest(String cutomer, String currency, String alertText) throws InterruptedException {
+
+		if (!TestUtil.isTestRunnable("openAccountTest", excel)) {
+			throw new SkipException("Skipping the test openAccountTest per excel instruction");
+		}
+
 		click("openAccBtn_XPATH");
 		select("custName_XPATH", cutomer);
 		select("curr_XPATH", currency);

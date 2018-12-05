@@ -3,11 +3,9 @@ package utilities;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
-
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
-import org.testng.ITestResult;
 import org.testng.annotations.DataProvider;
 
 import base.TestBase;
@@ -43,6 +41,27 @@ public class TestUtil extends TestBase {
 			}
 		}
 		return data;
+	}
+
+	public static boolean isTestRunnable(String testName, ExcelReader excel) {
+
+		String sheetName = "test_suite";
+		int rows = excel.getRowCount(sheetName);
+
+		for (int rowNum = 2; rowNum <= rows; rowNum++) {
+			String testCase = excel.getCellData(sheetName, "TCID", rowNum);
+			if (testCase.equalsIgnoreCase(testName)) {
+				String runMode = excel.getCellData(sheetName, "Runmode", rowNum);
+				if (runMode.equalsIgnoreCase("Y")) {
+					return true;
+				} else {
+					return false;
+				}
+
+			}
+		}
+		return false;
+
 	}
 
 }
