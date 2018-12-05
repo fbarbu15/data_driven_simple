@@ -2,8 +2,11 @@ package testcases;
 
 import org.testng.Assert;
 import org.testng.Reporter;
+import org.testng.SkipException;
 import org.testng.annotations.Test;
 import java.io.IOException;
+import java.util.Hashtable;
+
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -23,27 +26,29 @@ public class BankManagerLoginTest extends TestBase {
 				"Login was not successful: ");
 		log.debug("Login was successful");
 		Reporter.log("Login was successful");
+		Assert.fail("FAIL INTENDED");
 
 	}
 
 	@Test(priority = 1, dataProviderClass = TestUtil.class, dataProvider = "dp")
-	public void addCustomerTest(String firstName, String lastName, String postCode, String alertText)
-			throws InterruptedException {
+	public void addCustomerTest(Hashtable<String, String> data) throws InterruptedException {
 
+		if (!data.get("runMode").equals("Y")) {
+			throw new SkipException("Skipping the test case as the Run mode for data set is N");
+		}
 		click("addCustBtn_CSS");
-		type("firstNameField_CSS", firstName);
-		type("lastNameField_CSS", lastName);
-		type("postCodeField_CSS", postCode);
+		type("firstNameField_CSS", data.get("firstName"));
+		type("lastNameField_CSS", data.get("lastName"));
+		type("postCodeField_CSS", data.get("postCode"));
 		Thread.sleep(2000);
 		click("confirmAdd_CSS");
 		Alert alert = wait.until(ExpectedConditions.alertIsPresent());
-		Assert.assertTrue(alert.getText().contains(alertText),
-				"Expected alert " + alertText + " but got instead: " + alert.getText());
+		Assert.assertTrue(alert.getText().contains(data.get("alertText")),
+				"Expected alert " + data.get("alertText") + " but got instead: " + alert.getText());
 		alert.accept();
 		Thread.sleep(2000);
 		log.debug("New customer added");
 		Reporter.log("New customer added");
-		Assert.fail("FAIL INTENDED");
 
 	}
 

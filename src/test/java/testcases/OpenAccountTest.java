@@ -5,6 +5,9 @@ import org.testng.Reporter;
 import org.testng.SkipException;
 import org.testng.annotations.Test;
 import com.relevantcodes.extentreports.LogStatus;
+
+import java.util.Hashtable;
+
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import base.TestBase;
@@ -13,21 +16,21 @@ import utilities.TestUtil;
 public class OpenAccountTest extends TestBase {
 
 	@Test(dataProviderClass = TestUtil.class, dataProvider = "dp")
-	public void openAccountTest(String cutomer, String currency, String alertText) throws InterruptedException {
+	public void openAccountTest(Hashtable<String, String> data) throws InterruptedException {
 
 		if (!TestUtil.isTestRunnable("openAccountTest", excel)) {
 			throw new SkipException("Skipping the test openAccountTest per excel instruction");
 		}
 
 		click("openAccBtn_XPATH");
-		select("custName_XPATH", cutomer);
-		select("curr_XPATH", currency);
+		select("custName_XPATH", data.get("customer"));
+		select("curr_XPATH", data.get("currency"));
 		Thread.sleep(2000);
 		click("process_XPATH");
 		Thread.sleep(5000);
 		Alert alert = wait.until(ExpectedConditions.alertIsPresent());
-		Assert.assertTrue(alert.getText().contains(alertText),
-				"Expected alert " + alertText + " but got instead: " + alert.getText());
+		Assert.assertTrue(alert.getText().contains(data.get("alertText")),
+				"Expected alert " + data.get("alertText") + " but got instead: " + alert.getText());
 		alert.accept();
 		Thread.sleep(2000);
 		log.debug("New account opened");
