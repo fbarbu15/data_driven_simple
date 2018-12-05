@@ -7,7 +7,6 @@ import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
 import org.testng.Reporter;
-
 import com.relevantcodes.extentreports.LogStatus;
 
 import base.TestBase;
@@ -17,18 +16,18 @@ public class CustomListeners extends TestBase implements ITestListener {
 	public static Logger log = Logger.getLogger("devpinoyLogger");
 
 	public void onTestStart(ITestResult result) {
-		
+
 		test = rep.startTest(result.getName().toUpperCase());
 		log.debug("Starting test <<<<<<<<<<<<<<< " + result.getName() + " >>>>>>>>>>>>>>>");
 
 	}
 
 	public void onTestSuccess(ITestResult result) {
-		
+
 		test.log(LogStatus.PASS, result.getName().toUpperCase() + "PASS");
 		rep.endTest(test);
 		rep.flush();
-		
+
 	}
 
 	public void onTestFailure(ITestResult result) {
@@ -43,15 +42,17 @@ public class CustomListeners extends TestBase implements ITestListener {
 		}
 		test.log(LogStatus.FAIL, result.getName().toUpperCase() + "Failed with exception: " + result.getThrowable());
 		test.log(LogStatus.FAIL, test.addScreenCapture(TestUtil.screenshotPath + TestUtil.screenshotName));
-		Reporter.log("<a href="+TestUtil.screenshotPath + TestUtil.screenshotName+">Screenshot</a>");
+		Reporter.log("<a href=" + TestUtil.screenshotPath + TestUtil.screenshotName + ">Screenshot</a>");
 		rep.endTest(test);
 		rep.flush();
 
 	}
 
 	public void onTestSkipped(ITestResult result) {
-		// TODO Auto-generated method stub
 
+		test.log(LogStatus.SKIP, result.getName().toUpperCase() + "SKIPPED the test as the Run mode is NO");
+		rep.endTest(test);
+		rep.flush();
 	}
 
 	public void onTestFailedButWithinSuccessPercentage(ITestResult result) {
