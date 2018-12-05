@@ -4,22 +4,22 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
-
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.Reporter;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
-
 import com.relevantcodes.extentreports.ExtentReports;
 import com.relevantcodes.extentreports.ExtentTest;
 import com.relevantcodes.extentreports.LogStatus;
-
 import utilities.ExcelReader;
 import utilities.ExtentManager;
 import utilities.TestUtil;
@@ -83,14 +83,6 @@ public class TestBase {
 
 		test.log(LogStatus.INFO, "Clicking on : " + locator);
 	}
-	
-	public void verifyEquals(String expected, String actual) throws IOException {
-		try {
-			Assert.assertEquals(actual, expected);
-		} catch (Throwable e) {
-			TestUtil.captureScreenshot();
-		}
-	}
 
 	public void type(String locator, String value) {
 		if (locator.endsWith("_CSS")) {
@@ -100,7 +92,24 @@ public class TestBase {
 		} else if (locator.endsWith("_ID")) {
 			driver.findElement(By.id(OR.getProperty(locator))).sendKeys(value);
 		}
-		test.log(LogStatus.INFO, "Typing in : " + locator + " and entered value as : " + value);
+		test.log(LogStatus.INFO, "Clicking on : " + locator + " and entered value as : " + value);
+	}
+
+	static WebElement dropdown;
+
+	public void select(String locator, String value) {
+		if (locator.endsWith("_CSS")) {
+			dropdown = driver.findElement(By.cssSelector(OR.getProperty(locator)));
+		} else if (locator.endsWith("_XPATH")) {
+			dropdown = driver.findElement(By.xpath(OR.getProperty(locator)));
+		} else if (locator.endsWith("_ID")) {
+			dropdown = driver.findElement(By.id(OR.getProperty(locator)));
+		}
+
+		Select select = new Select(dropdown);
+		select.selectByVisibleText(value);
+
+		test.log(LogStatus.INFO, "Clicking on dropdown : " + locator + " and selecting value as : " + value);
 	}
 
 	public boolean isElementPresent(By by) {
@@ -109,6 +118,23 @@ public class TestBase {
 			return true;
 		} catch (NoSuchElementException e) {
 			return false;
+		}
+	}
+
+	public void verifyEquals(String expected, String actual) throws IOException {
+		try {
+			Assert.assertEquals(actual, expected);
+		} catch (Throwable t) {
+			TestUtil.captureScreenshot();
+			// ReportNG
+			Reporter.log("<br>" + "Verification failure : " + t.getMessage() + "<br>");
+			Reporter.log("<a href=" + TestUtil.screenshotPath + TestUtil.screenshotName + ">Screenshot</a>");
+			Reporter.log("<br>");
+			Reporter.log("<br>");
+			// Extent Reports
+			test.log(LogStatus.FAIL, "Verification failed with exception: " + t.getMessage());
+			test.log(LogStatus.FAIL, test.addScreenCapture(TestUtil.screenshotPath + TestUtil.screenshotName));
+
 		}
 	}
 
