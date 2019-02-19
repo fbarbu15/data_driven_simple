@@ -1,8 +1,15 @@
 package listeners;
 
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
+import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
 
 import org.apache.log4j.Logger;
+import org.testng.ISuite;
+import org.testng.ISuiteListener;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
@@ -10,10 +17,13 @@ import org.testng.Reporter;
 import com.relevantcodes.extentreports.LogStatus;
 
 import base.TestBase;
+import utilities.MonitoringMail;
+import utilities.TestConfig;
 import utilities.TestUtil;
 
-public class CustomListeners extends TestBase implements ITestListener {
+public class CustomListeners extends TestBase implements ITestListener, ISuiteListener {
 	public static Logger log = Logger.getLogger("devpinoyLogger");
+	public String messageBody;
 
 	public void onTestStart(ITestResult result) {
 
@@ -68,6 +78,35 @@ public class CustomListeners extends TestBase implements ITestListener {
 	public void onFinish(ITestContext context) {
 		// TODO Auto-generated method stub
 
+	}
+
+	public void onStart(ISuite suite) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void onFinish(ISuite suite) {
+		MonitoringMail mail = new MonitoringMail();
+
+		try {
+			messageBody = "http://" + InetAddress.getLocalHost().getHostAddress()
+					+ ":8080/job/DataDrivenLiveProject/Extent_20Reports/";
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println(messageBody);
+		
+		try {
+			mail.sendMail(TestConfig.server, TestConfig.from, TestConfig.to, TestConfig.subject, messageBody);
+		} catch (AddressException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (MessagingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 }
