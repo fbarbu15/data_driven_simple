@@ -36,6 +36,7 @@ public class TestBase {
 	public static WebDriverWait wait;
 	public ExtentReports rep = ExtentManager.getInstance();
 	public static ExtentTest test;
+	public static String browser;
 
 	@BeforeSuite
 	public void setUpSuite() throws IOException {
@@ -48,6 +49,11 @@ public class TestBase {
 			fis = new FileInputStream(System.getProperty("user.dir") + "/src/test/resources/properties/OR.properties");
 			OR.load(fis);
 			log.debug("OR file loaded");
+
+			if (System.getenv("browser") != null && !System.getenv("browser").isEmpty()) {
+				browser = System.getenv("browser");
+				config.setProperty("browser", browser);
+			}
 
 			if (config.getProperty("browser").equals("firefox")) {
 				System.setProperty("webdriver.gecko.driver",

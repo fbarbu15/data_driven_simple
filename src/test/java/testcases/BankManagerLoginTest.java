@@ -26,7 +26,7 @@ public class BankManagerLoginTest extends TestBase {
 				"Login was not successful: ");
 		log.debug("Login was successful");
 		Reporter.log("Login was successful");
-		Assert.fail("FAIL INTENDED");
+//		Assert.fail("FAIL INTENDED");
 
 	}
 
